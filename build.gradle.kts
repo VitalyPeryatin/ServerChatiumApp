@@ -59,4 +59,6 @@ tasks {
             attributes(Pair("Main-Class", "io.ktor.server.netty.EngineMain"))
         }
     }
+
+    create("stage").dependsOn("installDist")
 }
