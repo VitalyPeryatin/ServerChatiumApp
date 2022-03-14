@@ -1,0 +1,11 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+  config:
+    POSTGRES_DB: chatium
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+build:
+  docker:
+    backend: Dockerfile
