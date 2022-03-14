@@ -6,4 +6,4 @@ ENV BASE64="/u3+7QAAAAIAAAACAAAAAQALc2FtcGxlYWxpYXMAAAF/ZNlMIwAAArswggK3MA4GCisG
 
 RUN mkdir /app
 COPY . /app
-ENTRYPOINT ["/app/build/install/ru.chatium.chatiumapp/bin/ru.chatium.chatiumapp"]
+CMD ["/app/build/install/ru.chatium.chatiumapp/bin/ru.chatium.chatiumapp"]
