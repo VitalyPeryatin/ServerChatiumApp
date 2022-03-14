@@ -8,4 +8,4 @@ setup:
     POSTGRES_PASSWORD: postgres
 build:
   docker:
-    backend: Dockerfile-heroku
+    web: Dockerfile-heroku
