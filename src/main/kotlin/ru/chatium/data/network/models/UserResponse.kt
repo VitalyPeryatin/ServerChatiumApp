@@ -1,9 +1,10 @@
-package ru.chatium.models
+package ru.chatium.data.network.models
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SignUpCredentials(
+data class UserResponse(
+    val id: String? = null,
     val login: String,
     val password: String
 )

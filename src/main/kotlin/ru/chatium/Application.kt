@@ -2,47 +2,41 @@ package ru.chatium
 
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
-import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
+import io.ktor.server.routing.*
+import ru.chatium.data.db.DatabaseFactory
 import ru.chatium.di.DiContainer
 import ru.chatium.plugins.*
+import ru.chatium.routes.authRouting
+import ru.chatium.routes.customerRouting
+import ru.chatium.routes.usersRouting
 import java.io.File
 import java.util.*
 
+
 fun main(args: Array<String>) {
+    generateJksFile()
+    EngineMain.main(args)
+}
+
+private fun generateJksFile() {
     val base64 = System.getenv("BASE64")
     val decodedBytes = Base64.getDecoder().decode(base64)
     File("keystore.jks").writeBytes(decodedBytes)
-    EngineMain.main(args)
 }
 
 fun Application.allModules() {
 
     DiContainer.application = this
+    DatabaseFactory.init(environment.config)
 
     configureShutdownUrl()
     configureAuthentication()
     configureSockets()
-    configureRouting()
     configureSerialization()
 
-    /*val database = AppDatabase(environment.config)
-    database.init()
-
-    transaction {
-        addLogger(StdOutSqlLogger)
-
-        SchemaUtils.create(Cities)
-
-        val stPeteId = Cities.insert {
-            it[name] = "St. Petersburg"
-        } get Cities.id
-
-        println("Cities: ${Cities.selectAll()}")
-    }*/
-}
-
-object Cities: IntIdTable() {
-    val name = varchar("name", 50)
+    routing {
+        customerRouting()
+        authRouting()
+        usersRouting()
+    }
 }
