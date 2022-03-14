@@ -9,7 +9,3 @@ setup:
 build:
   docker:
     web: Dockerfile-heroku
-release:
-  command:
-    - ./gradlew installDist
-  image: web
