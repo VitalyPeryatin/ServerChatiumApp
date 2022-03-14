@@ -1,8 +1,3 @@
-FROM gradle:7-jdk11 AS build
-COPY --chown=gradle:gradle . /home/gradle/src
-WORKDIR /home/gradle/src
-RUN gradle installDist
-
 FROM openjdk:11
 EXPOSE 8080
 EXPOSE 8443
@@ -13,5 +8,5 @@ ENV JDBC_DATABASE_USERNAME="postgres"
 ENV JDBC_DATABASE_PASSWORD="postgres"
 
 RUN mkdir /app
-COPY --from=build /home/gradle/src /app
+COPY . /app
 CMD ["/app/build/install/ru.chatium.chatiumapp/bin/ru.chatium.chatiumapp"]
