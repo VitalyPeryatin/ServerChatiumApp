@@ -7,7 +7,6 @@ ENV JDBC_DATABASE_URL="jdbc:postgresql://db:5432/chatium"
 ENV JDBC_DATABASE_USERNAME="postgres"
 ENV JDBC_DATABASE_PASSWORD="postgres"
 
-CMD [ "./gradlew installDist" ]
 RUN mkdir /app
 COPY . /app
 CMD ["/app/build/install/ru.chatium.chatiumapp/bin/ru.chatium.chatiumapp"]
