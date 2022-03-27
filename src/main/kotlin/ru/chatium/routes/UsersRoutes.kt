@@ -5,14 +5,15 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import ru.chatium.data.network.models.UserPrincipal
 import ru.chatium.data.network.models.UserResponse
 import ru.chatium.data.repository.UsersRepository
 
-fun Route.usersRouting() {
+fun Route.adminRouting() {
 
     val usersRepository = UsersRepository()
 
-    route("/users") {
+    route("admin/users") {
         get {
             val users = usersRepository.getAllUsers()
             if (users.isEmpty()) {
@@ -21,12 +22,13 @@ fun Route.usersRouting() {
                 call.respond(users)
             }
         }
-        post {
+        post("admin/users") {
             val user = call.receive<UserResponse>()
-            val isUserAdded = usersRepository.addNewUser(user)
+            val userPrincipal = UserPrincipal(id = user.id, phoneNumber = user.phoneNumber)
+            val isUserAdded = usersRepository.addNewUser(userPrincipal)
             call.respondText("UserAdded: $isUserAdded")
         }
-        delete("{id}") {
+        delete("admin/users/{id}") {
             val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
             val isUserDeleted = usersRepository.deleteUser(id)
             call.respondText("UserDeleted: $isUserDeleted")

@@ -38,3 +38,4 @@ bin/
 hs_err_pid*.log
 
 gradle-user-home
+/src/main/resources/chatium-ee362-firebase-adminsdk-yx443-fafbbf5cf8.json

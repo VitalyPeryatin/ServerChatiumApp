@@ -33,6 +33,12 @@ sourceSets {
 }
 
 dependencies {
+
+    // Core
+    implementation(kotlin("stdlib-jdk8"))
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
+    // Ktor
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
@@ -43,15 +49,16 @@ dependencies {
     implementation("io.ktor:ktor-server-websockets:$ktor_version")
     implementation("io.ktor:ktor-network-tls-certificates:$ktor_version")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 
+    // Database
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.postgresql:postgresql:$postgresql_version")
 
-    implementation(kotlin("stdlib-jdk8"))
+    // Firebase
+    implementation("com.google.firebase:firebase-admin:8.1.0")
 }
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
@@ -70,17 +77,4 @@ tasks {
     }
 
     create("stage").dependsOn("installDist")
-
-    /*register("hello") {
-        doFirst {
-            println("Hello, Gradle!")
-            exec {
-                commandLine("docker", "rm", "--force", "chatium-app")
-                commandLine("docker", "build", "-t", "chatium-app", ".")
-                commandLine("docker", "run", "-d", "-p", "8080:8080", "--name", "chatium-app", "chatium-app")
-            }
-        }
-    }.configure {
-        dependsOn("installDist")
-    }*/
 }

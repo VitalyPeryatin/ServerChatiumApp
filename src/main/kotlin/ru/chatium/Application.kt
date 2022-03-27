@@ -8,7 +8,7 @@ import ru.chatium.di.DiContainer
 import ru.chatium.plugins.*
 import ru.chatium.routes.authRouting
 import ru.chatium.routes.customerRouting
-import ru.chatium.routes.usersRouting
+import ru.chatium.routes.adminRouting
 import java.io.File
 import java.util.*
 
@@ -35,6 +35,6 @@ fun Application.allModules() {
     routing {
         customerRouting()
         authRouting()
-        usersRouting()
+        adminRouting()
     }
 }

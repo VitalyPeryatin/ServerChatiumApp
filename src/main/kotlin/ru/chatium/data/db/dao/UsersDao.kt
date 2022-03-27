@@ -3,24 +3,25 @@ package ru.chatium.data.db.dao
 import org.jetbrains.exposed.sql.*
 import ru.chatium.data.db.DatabaseFactory
 import ru.chatium.data.db.models.UsersTable
+import ru.chatium.data.network.models.UserPrincipal
 import ru.chatium.data.network.models.UserResponse
-import java.util.*
 
 class UsersDao {
 
     private fun resultRowToUser(row: ResultRow): UserResponse {
         return UserResponse(
             id = row[UsersTable.id].toString(),
-            login = row[UsersTable.login],
-            password = row[UsersTable.password],
+            username = row[UsersTable.username],
+            phoneNumber = row[UsersTable.phoneNumber],
         )
     }
 
-    suspend fun addNewUser(user: UserResponse): Boolean {
+    suspend fun addNewUser(user: UserPrincipal): Boolean {
         return DatabaseFactory.dbQuery {
             val insertStatement = UsersTable.insert {
-                it[login] = user.login
-                it[password] = user.password
+                it[id] = user.id
+                it[username] = null
+                it[phoneNumber] = user.phoneNumber
             }
             insertStatement.resultedValues?.singleOrNull() != null
         }
@@ -34,21 +35,13 @@ class UsersDao {
 
     suspend fun deleteUser(id: String): Boolean {
         return DatabaseFactory.dbQuery {
-            UsersTable.deleteWhere { UsersTable.id eq UUID.fromString(id) } > 0
+            UsersTable.deleteWhere { UsersTable.id eq id } > 0
         }
     }
 
-    suspend fun isValidUserCredentials(user: UserResponse): Boolean {
+    suspend fun hasUser(userId: String): Boolean {
         return DatabaseFactory.dbQuery {
-            UsersTable.select {
-                (UsersTable.login eq user.login) and (UsersTable.password eq user.password)
-            }.any()
-        }
-    }
-
-    suspend fun hasUserWithLogin(login: String): Boolean {
-        return DatabaseFactory.dbQuery {
-            UsersTable.select { UsersTable.login eq login }.any()
+            UsersTable.select { UsersTable.id eq userId }.any()
         }
     }
 }
